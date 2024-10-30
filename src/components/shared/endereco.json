@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_enderecos",
+  "info": {
+    "displayName": "endereco"
+  },
+  "options": {},
+  "attributes": {
+    "rua": {
+      "type": "string"
+    },
+    "cep": {
+      "type": "biginteger"
+    }
+  }
+}

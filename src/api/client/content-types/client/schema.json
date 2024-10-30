@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "clients",
+  "info": {
+    "singularName": "client",
+    "pluralName": "clients",
+    "displayName": "Client",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cnpj": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    },
+    "adress_data": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::adress.adress"
+    }
+  }
+}
