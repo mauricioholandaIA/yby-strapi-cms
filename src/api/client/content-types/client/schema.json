@@ -25,6 +25,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::adress.adress"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "client"
     }
   }
 }

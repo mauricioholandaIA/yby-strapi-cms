@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cooperatives",
+  "info": {
+    "singularName": "cooperative",
+    "pluralName": "cooperatives",
+    "displayName": "cooperative"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cooperative_name": {
+      "type": "string"
+    },
+    "cooperative_code_access": {
+      "type": "string"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "cooperative"
+    }
+  }
+}

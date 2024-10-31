@@ -43,6 +43,10 @@ export interface ApiClientClient extends Struct.CollectionTypeSchema {
     email: Schema.Attribute.String;
     user_name: Schema.Attribute.String;
     adress_data: Schema.Attribute.Relation<'oneToMany', 'api::adress.adress'>;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -52,6 +56,38 @@ export interface ApiClientClient extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::client.client'>;
+  };
+}
+
+export interface ApiCooperativeCooperative extends Struct.CollectionTypeSchema {
+  collectionName: 'cooperatives';
+  info: {
+    singularName: 'cooperative';
+    pluralName: 'cooperatives';
+    displayName: 'cooperative';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cooperative_name: Schema.Attribute.String;
+    cooperative_code_access: Schema.Attribute.String;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cooperative.cooperative'
+    >;
   };
 }
 
@@ -525,6 +561,11 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.role'
     >;
     admin: Schema.Attribute.Boolean;
+    client: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
+    cooperative: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::cooperative.cooperative'
+    >;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -907,6 +948,7 @@ declare module '@strapi/strapi' {
     export interface ContentTypeSchemas {
       'api::adress.adress': ApiAdressAdress;
       'api::client.client': ApiClientClient;
+      'api::cooperative.cooperative': ApiCooperativeCooperative;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;

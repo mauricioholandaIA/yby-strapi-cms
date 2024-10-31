@@ -67,6 +67,18 @@
     },
     "admin": {
       "type": "boolean"
+    },
+    "client": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::client.client",
+      "inversedBy": "user"
+    },
+    "cooperative": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cooperative.cooperative",
+      "inversedBy": "user"
     }
   }
 }
