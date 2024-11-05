@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "plannings",
+  "info": {
+    "singularName": "planning",
+    "pluralName": "plannings",
+    "displayName": "planning",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "client": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::client.client"
+    },
+    "cooperative": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cooperative.cooperative"
+    },
+    "week_days": {
+      "type": "enumeration",
+      "enum": [
+        "seg",
+        "ter",
+        "qua",
+        "qui",
+        "sex",
+        "sab",
+        "dom"
+      ]
+    }
+  }
+}

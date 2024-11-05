@@ -7,28 +7,57 @@ import { factories } from "@strapi/strapi";
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::client.client", ({ strapi }) => ({
-  async create(ctx) {
-    console.log(ctx.request.body.data);
-
-    const { data } = ctx.request.body;
+  async create(ctx: { request: { body: any }; body: any }) {
+    const data = ctx.request.body;
 
     const adressData = data.adress_data;
     delete data.adress_data;
 
-    const client = await strapi.documents("api::client.client").create({
-      data,
+    // cria o cliente
+    const client = await strapi
+      .documents("api::client.client/actions/publish?")
+      .create({
+        data: {
+          ...data,
+        },
+      });
+
+    //  cliente ao usuário
+    const createdUser = await strapi
+      .documents("plugin::users-permissions.user")
+      .create({
+        data: {
+          client: client.id,
+          confirmed: true,
+          blocked: false,
+          username: client.social_name,
+          password: client.password,
+          email: `${client.email}`,
+          role: {
+            id: 5,
+            name: "cliente",
+          },
+        },
+      });
+
+    // Associa o cliente ao usuario
+    await strapi.documents("api::client.client/actions/publish?").update({
+      documentId: client.documentId,
+      data: {
+        ...client,
+        user: createdUser.documentId,
+      },
     });
 
     // Associa os endereços ao cliente e retorna os ids dos endereços
     const createdAddress = await Promise.all(
       adressData.map(async (adress: any) => {
-        console.log(adress);
+        console.log("adress", adress);
 
-        return strapi.documents("api::adress.adress").create({
+        return strapi.documents("api::adress.adress/actions/publish?").create({
           data: {
             ...adress,
             client_data: client.id,
-            status: "published",
           },
         });
       })
@@ -44,7 +73,6 @@ module.exports = createCoreController("api::client.client", ({ strapi }) => ({
       data: {
         ...client,
         adress_data: getAddressDocumentId,
-        status: "published",
       },
     });
 

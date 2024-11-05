@@ -1,96 +1,5 @@
 import type { Struct, Schema } from '@strapi/strapi';
 
-export interface ApiAdressAdress extends Struct.CollectionTypeSchema {
-  collectionName: 'adresses';
-  info: {
-    singularName: 'adress';
-    pluralName: 'adresses';
-    displayName: 'Adress';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    cep: Schema.Attribute.BigInteger;
-    street: Schema.Attribute.String;
-    client_data: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
-    createdAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    publishedAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::adress.adress'>;
-  };
-}
-
-export interface ApiClientClient extends Struct.CollectionTypeSchema {
-  collectionName: 'clients';
-  info: {
-    singularName: 'client';
-    pluralName: 'clients';
-    displayName: 'Client';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    cnpj: Schema.Attribute.String;
-    email: Schema.Attribute.String;
-    user_name: Schema.Attribute.String;
-    adress_data: Schema.Attribute.Relation<'oneToMany', 'api::adress.adress'>;
-    user: Schema.Attribute.Relation<
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    publishedAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::client.client'>;
-  };
-}
-
-export interface ApiCooperativeCooperative extends Struct.CollectionTypeSchema {
-  collectionName: 'cooperatives';
-  info: {
-    singularName: 'cooperative';
-    pluralName: 'cooperatives';
-    displayName: 'cooperative';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    cooperative_name: Schema.Attribute.String;
-    cooperative_code_access: Schema.Attribute.String;
-    user: Schema.Attribute.Relation<
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    publishedAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::cooperative.cooperative'
-    >;
-  };
-}
-
 export interface PluginUploadFile extends Struct.CollectionTypeSchema {
   collectionName: 'files';
   info: {
@@ -581,6 +490,140 @@ export interface PluginUsersPermissionsUser
   };
 }
 
+export interface ApiAdressAdress extends Struct.CollectionTypeSchema {
+  collectionName: 'adresses';
+  info: {
+    singularName: 'adress';
+    pluralName: 'adresses';
+    displayName: 'adress';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    cep: Schema.Attribute.BigInteger;
+    street: Schema.Attribute.String;
+    client_data: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
+    number: Schema.Attribute.Integer;
+    neighborhood: Schema.Attribute.String;
+    state: Schema.Attribute.String;
+    city: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::adress.adress'>;
+  };
+}
+
+export interface ApiClientClient extends Struct.CollectionTypeSchema {
+  collectionName: 'clients';
+  info: {
+    singularName: 'client';
+    pluralName: 'clients';
+    displayName: 'client';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    cnpj: Schema.Attribute.String;
+    email: Schema.Attribute.String;
+    social_name: Schema.Attribute.String;
+    adress_data: Schema.Attribute.Relation<'oneToMany', 'api::adress.adress'>;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    responsible_name: Schema.Attribute.String;
+    phone: Schema.Attribute.BigInteger;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::client.client'>;
+  };
+}
+
+export interface ApiCooperativeCooperative extends Struct.CollectionTypeSchema {
+  collectionName: 'cooperatives';
+  info: {
+    singularName: 'cooperative';
+    pluralName: 'cooperatives';
+    displayName: 'cooperative';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    cooperative_name: Schema.Attribute.String;
+    cooperative_code_access: Schema.Attribute.String;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    cooperative_employees: Schema.Attribute.Integer;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cooperative.cooperative'
+    >;
+  };
+}
+
+export interface ApiPlanningPlanning extends Struct.CollectionTypeSchema {
+  collectionName: 'plannings';
+  info: {
+    singularName: 'planning';
+    pluralName: 'plannings';
+    displayName: 'planning';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    client: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
+    cooperative: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::cooperative.cooperative'
+    >;
+    week_days: Schema.Attribute.Enumeration<
+      ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom']
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::planning.planning'
+    >;
+  };
+}
+
 export interface AdminPermission extends Struct.CollectionTypeSchema {
   collectionName: 'admin_permissions';
   info: {
@@ -946,9 +989,6 @@ export interface AdminTransferTokenPermission
 declare module '@strapi/strapi' {
   export module Public {
     export interface ContentTypeSchemas {
-      'api::adress.adress': ApiAdressAdress;
-      'api::client.client': ApiClientClient;
-      'api::cooperative.cooperative': ApiCooperativeCooperative;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;
@@ -959,6 +999,10 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::adress.adress': ApiAdressAdress;
+      'api::client.client': ApiClientClient;
+      'api::cooperative.cooperative': ApiCooperativeCooperative;
+      'api::planning.planning': ApiPlanningPlanning;
       'admin::permission': AdminPermission;
       'admin::user': AdminUser;
       'admin::role': AdminRole;

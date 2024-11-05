@@ -4,11 +4,11 @@
   "info": {
     "singularName": "client",
     "pluralName": "clients",
-    "displayName": "Client",
+    "displayName": "client",
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -18,7 +18,7 @@
     "email": {
       "type": "string"
     },
-    "user_name": {
+    "social_name": {
       "type": "string"
     },
     "adress_data": {
@@ -31,6 +31,12 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user",
       "mappedBy": "client"
+    },
+    "responsible_name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "biginteger"
     }
   }
 }

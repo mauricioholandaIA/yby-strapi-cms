@@ -3,7 +3,7 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { Console } from "console";
+import cooperative from "../routes/cooperative";
 
 const { createCoreController } = require("@strapi/strapi").factories;
 
@@ -19,7 +19,6 @@ module.exports = createCoreController(
         .create({
           data: {
             ...data,
-            status: "published",
           },
         });
 
@@ -27,7 +26,6 @@ module.exports = createCoreController(
         .documents("plugin::users-permissions.user")
         .create({
           data: {
-            status: "published",
             cooperative: cooperative.id,
             confirmed: true,
             blocked: false,
@@ -35,12 +33,8 @@ module.exports = createCoreController(
             password: cooperative.cooperative_code_access,
             email: `${cooperative.cooperative_code_access}@coop.com`,
             role: {
-              connect: [
-                {
-                  id: 2,
-                  name: "Public",
-                },
-              ],
+              id: 4,
+              name: "cooperativa",
             },
           },
         });
@@ -51,12 +45,10 @@ module.exports = createCoreController(
         data: {
           ...cooperative,
           user: createdUser.documentId,
-          status: "published",
         },
       });
 
       // retorna os dados do cooperado e do usuário
-
       const cooperativeWithUser = await strapi
         .documents("api::cooperative.cooperative")
         .findOne({
@@ -71,4 +63,3 @@ module.exports = createCoreController(
 );
 
 export default factories.createCoreController("api::cooperative.cooperative");
-// plugin::users-permissions.user

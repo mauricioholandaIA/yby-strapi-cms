@@ -4,10 +4,11 @@
   "info": {
     "singularName": "cooperative",
     "pluralName": "cooperatives",
-    "displayName": "cooperative"
+    "displayName": "cooperative",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -22,6 +23,9 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user",
       "mappedBy": "cooperative"
+    },
+    "cooperative_employees": {
+      "type": "integer"
     }
   }
 }

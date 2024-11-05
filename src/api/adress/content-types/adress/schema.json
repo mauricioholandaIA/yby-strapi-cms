@@ -4,11 +4,11 @@
   "info": {
     "singularName": "adress",
     "pluralName": "adresses",
-    "displayName": "Adress",
+    "displayName": "adress",
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -22,6 +22,18 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::client.client"
+    },
+    "number": {
+      "type": "integer"
+    },
+    "neighborhood": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
     }
   }
 }
