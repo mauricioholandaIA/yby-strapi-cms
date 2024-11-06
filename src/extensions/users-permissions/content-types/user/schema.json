@@ -79,6 +79,12 @@
       "relation": "oneToOne",
       "target": "api::cooperative.cooperative",
       "inversedBy": "user"
+    },
+    "cooperative_id": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
     }
   }
 }

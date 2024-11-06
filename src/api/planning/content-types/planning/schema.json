@@ -17,22 +17,10 @@
       "relation": "oneToOne",
       "target": "api::client.client"
     },
-    "cooperative": {
+    "cooperatives": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::cooperative.cooperative"
-    },
-    "week_days": {
-      "type": "enumeration",
-      "enum": [
-        "seg",
-        "ter",
-        "qua",
-        "qui",
-        "sex",
-        "sab",
-        "dom"
-      ]
     }
   }
 }

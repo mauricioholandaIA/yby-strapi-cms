@@ -13,6 +13,7 @@ module.exports = createCoreController(
     async create(ctx) {
       const { data } = ctx.request.body;
 
+      console.log(data);
       // cria o cooperado
       const cooperative = await strapi
         .documents("api::cooperative.cooperative")
@@ -26,11 +27,13 @@ module.exports = createCoreController(
         .documents("plugin::users-permissions.user")
         .create({
           data: {
+            provider: "local",
             cooperative: cooperative.id,
+            cooperative_id: cooperative.documentId,
             confirmed: true,
             blocked: false,
-            username: cooperative.cooperative_code_access,
-            password: cooperative.cooperative_code_access,
+            username: data.cooperative_code_access,
+            password: data.cooperative_code_access,
             email: `${cooperative.cooperative_code_access}@coop.com`,
             role: {
               id: 4,

@@ -475,6 +475,8 @@ export interface PluginUsersPermissionsUser
       'oneToOne',
       'api::cooperative.cooperative'
     >;
+    cooperative_id: Schema.Attribute.String;
+    client_id: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -602,12 +604,9 @@ export interface ApiPlanningPlanning extends Struct.CollectionTypeSchema {
   };
   attributes: {
     client: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
-    cooperative: Schema.Attribute.Relation<
-      'oneToOne',
+    cooperatives: Schema.Attribute.Relation<
+      'oneToMany',
       'api::cooperative.cooperative'
-    >;
-    week_days: Schema.Attribute.Enumeration<
-      ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom']
     >;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
