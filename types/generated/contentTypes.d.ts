@@ -557,6 +557,40 @@ export interface ApiClientClient extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
+  collectionName: 'collections';
+  info: {
+    singularName: 'collection';
+    pluralName: 'collections';
+    displayName: 'collection';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    client: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
+    waste: Schema.Attribute.String;
+    colector: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    weight: Schema.Attribute.String;
+    breakdown: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::collection.collection'
+    >;
+  };
+}
+
 export interface ApiCooperativeCooperative extends Struct.CollectionTypeSchema {
   collectionName: 'cooperatives';
   info: {
@@ -1000,6 +1034,7 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::adress.adress': ApiAdressAdress;
       'api::client.client': ApiClientClient;
+      'api::collection.collection': ApiCollectionCollection;
       'api::cooperative.cooperative': ApiCooperativeCooperative;
       'api::planning.planning': ApiPlanningPlanning;
       'admin::permission': AdminPermission;
