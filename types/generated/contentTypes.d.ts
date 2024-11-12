@@ -638,10 +638,13 @@ export interface ApiPlanningPlanning extends Struct.CollectionTypeSchema {
   };
   attributes: {
     client: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
-    cooperatives: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::cooperative.cooperative'
-    >;
+    seg: Schema.Attribute.Relation<'oneToOne', 'api::cooperative.cooperative'>;
+    ter: Schema.Attribute.Relation<'oneToOne', 'api::cooperative.cooperative'>;
+    qua: Schema.Attribute.Relation<'oneToOne', 'api::cooperative.cooperative'>;
+    qui: Schema.Attribute.Relation<'oneToOne', 'api::cooperative.cooperative'>;
+    sex: Schema.Attribute.Relation<'oneToOne', 'api::cooperative.cooperative'>;
+    sab: Schema.Attribute.Relation<'oneToOne', 'api::cooperative.cooperative'>;
+    dom: Schema.Attribute.Relation<'oneToOne', 'api::cooperative.cooperative'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

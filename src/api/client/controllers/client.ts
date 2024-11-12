@@ -78,6 +78,14 @@ module.exports = createCoreController("api::client.client", ({ strapi }) => ({
       },
     });
 
+    await strapi.documents("api::planning.planning").create({
+      data: {
+        client: {
+          id: client.id,
+        },
+      },
+    });
+
     // Retorna o cliente com os endereços relacionados
     const clientWithAddress = await strapi
       .documents("api::client.client")

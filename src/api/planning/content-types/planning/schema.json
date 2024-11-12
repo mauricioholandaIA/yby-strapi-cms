@@ -17,9 +17,39 @@
       "relation": "oneToOne",
       "target": "api::client.client"
     },
-    "cooperatives": {
+    "seg": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "oneToOne",
+      "target": "api::cooperative.cooperative"
+    },
+    "ter": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cooperative.cooperative"
+    },
+    "qua": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cooperative.cooperative"
+    },
+    "qui": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cooperative.cooperative"
+    },
+    "sex": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cooperative.cooperative"
+    },
+    "sab": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cooperative.cooperative"
+    },
+    "dom": {
+      "type": "relation",
+      "relation": "oneToOne",
       "target": "api::cooperative.cooperative"
     }
   }
