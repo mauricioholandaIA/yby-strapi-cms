@@ -563,19 +563,18 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
     singularName: 'collection';
     pluralName: 'collections';
     displayName: 'collection';
+    description: '';
   };
   options: {
     draftAndPublish: false;
   };
   attributes: {
     client: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
-    waste: Schema.Attribute.String;
     colector: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     weight: Schema.Attribute.String;
-    breakdown: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
+    breakdown: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    justification: Schema.Attribute.Text;
+    wastes: Schema.Attribute.Relation<'oneToMany', 'api::waste.waste'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -657,6 +656,33 @@ export interface ApiPlanningPlanning extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::planning.planning'
     >;
+  };
+}
+
+export interface ApiWasteWaste extends Struct.CollectionTypeSchema {
+  collectionName: 'wastes';
+  info: {
+    singularName: 'waste';
+    pluralName: 'wastes';
+    displayName: 'waste';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::waste.waste'>;
   };
 }
 
@@ -1040,6 +1066,7 @@ declare module '@strapi/strapi' {
       'api::collection.collection': ApiCollectionCollection;
       'api::cooperative.cooperative': ApiCooperativeCooperative;
       'api::planning.planning': ApiPlanningPlanning;
+      'api::waste.waste': ApiWasteWaste;
       'admin::permission': AdminPermission;
       'admin::user': AdminUser;
       'admin::role': AdminRole;

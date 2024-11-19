@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "wastes",
+  "info": {
+    "singularName": "waste",
+    "pluralName": "wastes",
+    "displayName": "waste",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}
