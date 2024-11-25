@@ -575,6 +575,7 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
     breakdown: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     justification: Schema.Attribute.Text;
     wastes: Schema.Attribute.Relation<'oneToMany', 'api::waste.waste'>;
+    client_id: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
