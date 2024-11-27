@@ -130,3 +130,13 @@ build
 .strapi-updater.json
 .strapi-cloud.json
 _docker_volumes/
+
+
+.tmp/
+.cache/
+.git/
+build/
+node_modules/
+.env
+data/
+backup/

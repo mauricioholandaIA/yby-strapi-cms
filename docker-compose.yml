@@ -1,0 +1,15 @@
+
+services:
+  postgres:
+    container_name: postgres
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    env_file: .env
+    image: postgres:14.5-alpine
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123"
+      POSTGRES_DB: "strapi"
+    volumes:
+      - ./_docker_volumes/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
