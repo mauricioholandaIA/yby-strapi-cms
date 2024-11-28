@@ -13,13 +13,15 @@
   "pluginOptions": {},
   "attributes": {
     "cnpj": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "email": {
       "type": "string"
     },
     "social_name": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "adress_data": {
       "type": "relation",
