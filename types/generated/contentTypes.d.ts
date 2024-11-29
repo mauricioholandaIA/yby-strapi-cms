@@ -504,7 +504,7 @@ export interface ApiAdressAdress extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    cep: Schema.Attribute.BigInteger;
+    cep: Schema.Attribute.BigInteger & Schema.Attribute.Unique;
     street: Schema.Attribute.String;
     client_data: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
     number: Schema.Attribute.Integer;
@@ -535,9 +535,9 @@ export interface ApiClientClient extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    cnpj: Schema.Attribute.String;
+    cnpj: Schema.Attribute.String & Schema.Attribute.Unique;
     email: Schema.Attribute.String;
-    social_name: Schema.Attribute.String;
+    social_name: Schema.Attribute.String & Schema.Attribute.Unique;
     adress_data: Schema.Attribute.Relation<'oneToMany', 'api::adress.adress'>;
     user: Schema.Attribute.Relation<
       'oneToOne',

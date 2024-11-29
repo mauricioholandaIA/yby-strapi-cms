@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "cep": {
-      "type": "biginteger"
+      "type": "biginteger",
+      "unique": true
     },
     "street": {
       "type": "string"
