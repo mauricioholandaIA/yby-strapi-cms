@@ -35,7 +35,7 @@ jobs:
         run: |
           rm -rf ./deploy
           mkdir -p ./deploy
-          cp -r ./* ./deploy/
+          cp -r . ./deploy/
           cd ./deploy
           zip -r ../strapi-deploy.zip .
 
