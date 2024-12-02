@@ -1,0 +1,49 @@
+name: Deploy Strapi to AWS Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Strapi
+        run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Package application
+        run: |
+          mkdir -p ./deploy
+          cp -r ./* ./deploy/
+          cd ./deploy
+          zip -r ../strapi-deploy.zip .
+
+      - name: Deploy to AWS Elastic Beanstalk
+        run: |
+          aws s3 cp strapi-deploy.zip s3://yby-strapi-cms-dev/strapi-deploy.zip
+          aws elasticbeanstalk create-application-version --application-name yby-strapi-cms-app --version-label ${{ github.sha }} --source-bundle S3Bucket="yby-strapi-cms-dev",S3Key="strapi-deploy.zip"
+          aws elasticbeanstalk update-environment --environment-name yby-strapi-cms-env --version-label ${{ github.sha }}
+
+      - name: Configure environment variables for PostgreSQL
+        run: |
+          aws elasticbeanstalk update-environment --environment-name yby-strapi-cms-env --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=DATABASE_URL,Value=postgres://postgresadmin:JDu384nf8294h@terraform-20241129052344326800000001.cxo6swgqm3n3.us-east-1.rds.amazonaws.com:5432/yby_db_dev
