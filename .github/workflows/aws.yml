@@ -34,7 +34,9 @@ jobs:
       - name: Package application
         run: |
           rm -rf ./deploy
+          ls -la
           mkdir -p ./deploy
+          ls -la
           cp -r . ./deploy/
           cd ./deploy
           zip -r ../strapi-deploy.zip .
