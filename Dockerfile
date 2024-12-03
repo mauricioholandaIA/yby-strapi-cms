@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY config/ ./
-COPY .env .env
+COPY .env ./
 RUN npm install
 
 RUN mkdir -p public/uploads
