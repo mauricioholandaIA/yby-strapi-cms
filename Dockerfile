@@ -8,7 +8,6 @@ RUN npm install
 
 RUN mkdir -p public/uploads
 COPY . .
-COPY .env .env
 
 EXPOSE 1337
 
