@@ -17,7 +17,7 @@ jobs:
 
       - name: Generate Deployment Package 
         # zip all files except .git
-        run: zip -r yby-strapi-app.zip * -x "**.git**" -x "**.docker**" -x "*package-lock.json*"
+        run: zip -r yby-strapi-cms-app.zip * -x "**.git**" -x "**.docker**" -x "*package-lock.json*"
 
       - name: Get timestamp
         uses: gerred/actions/current-time@master
@@ -39,11 +39,11 @@ jobs:
          #  input the credentials you used to setup AWS CLI and credentials for the application environment
           aws_access_key: "${{ secrets.AWS_ACCESS_KEY_ID }}"
           aws_secret_key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          application_name: yby-strapi-app
-          environment_name: yby-strapi-env
+          application_name: yby-strapi-cms-app
+          environment_name: yby-strapi-cms-env
           version_label: "app-${{ steps.format-time.outputs.replaced }}"
           region: us-east-1
-          deployment_package: yby-strapi-app.zip
+          deployment_package: yby-strapi-cms-app.zip
 
       - name: Deployed!
         run: echo App deployed to ELB
