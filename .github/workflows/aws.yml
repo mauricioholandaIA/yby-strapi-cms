@@ -20,7 +20,7 @@ jobs:
 
       - name: Generate Deployment Package 
         # zip all files except .git
-        run: zip -r yby-strapi-cms-app.zip * -x "**.git**" -x "**.docker**" -x "*package-lock.json*"
+        run: zip -r yby-strapi-cms-app.zip * -x "**.git**" -x "**.docker**" -x "**docker-**" -x "*package-lock.json*"
 
       - name: Get timestamp
         uses: gerred/actions/current-time@master
