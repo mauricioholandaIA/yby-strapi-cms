@@ -1,52 +1,49 @@
-name: Deploy Strapi to AWS Elastic Beanstalk
-
+name: Deploy Strapi
 on:
+  # activates the workflow when there is a push on the master branch
   push:
     branches:
       - main
-
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-latest # the operating system your job should run on
+    strategy:
+      matrix:
+        node-version: [20.x]
     steps:
-      - name: Checkout code
+      - name: Checkout Latest Repo
+        # checks out your repository under the GitHub workspace so that your workflow can access it
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Generate Deployment Package 
+        # zip all files except .git
+        run: zip -r yby-front-app.zip * -x "**.git**" -x "**.docker**" -x "*package-lock.json*"
+
+      - name: Get timestamp
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - name: Run string replace
+        uses: frabert/replace-string-action@master
+        id: format-time
         with:
-          node-version: '20.15.1'
+          # replaces '[:\.]+' in the timestamp with '-'
+          pattern: '[:\.]+'
+          string: "${{ steps.current-time.outputs.time }}"
+          replace-with: '-'
+          flags: 'g'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Strapi
-        run: npm run build
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+         #  input the credentials you used to setup AWS CLI and credentials for the application environment
+          aws_access_key: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          aws_secret_key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          application_name: yby-strapi-app
+          environment_name: yby-strapi-env
+          version_label: "app-${{ steps.format-time.outputs.replaced }}"
+          region: us-east-1
+          deployment_package: yby-strapi-app.zip
 
-      - name: Package application
-        run: |
-          rm -rf ./deploy
-          ls -la
-          mkdir -p ./deploy
-          ls -la
-          cp -r . ./deploy/
-          cd ./deploy
-          zip -r ../strapi-deploy.zip .
-
-      - name: Deploy to AWS Elastic Beanstalk
-        run: |
-          aws s3 cp strapi-deploy.zip s3://yby-strapi-cms-dev/strapi-deploy.zip
-          aws elasticbeanstalk create-application-version --application-name yby-strapi-cms-app --version-label ${{ github.sha }} --source-bundle S3Bucket="yby-strapi-cms-dev",S3Key="strapi-deploy.zip"
-          aws elasticbeanstalk update-environment --environment-name yby-strapi-cms-env --version-label ${{ github.sha }}
-
-      - name: Configure environment variables for PostgreSQL
-        run: |
-          aws elasticbeanstalk update-environment --environment-name yby-strapi-cms-env --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=DATABASE_URL,Value=postgres://postgresadmin:JDu384nf8294h@terraform-20241129052344326800000001.cxo6swgqm3n3.us-east-1.rds.amazonaws.com:5432/yby_db_dev
+      - name: Deployed!
+        run: echo App deployed to ELB
