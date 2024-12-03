@@ -1,16 +1,15 @@
-FROM node:20.15.1-alpine3.20 
+FROM node:20-alpine
 
-ENV DATABASE_HOST=${DATABASE_HOST}
-ENV DATABASE_PORT=${DATABASE_PORT}
-ENV DATABASE_NAME=${DATABASE_NAME}
-ENV DATABASE_USERNAME=${DATABASE_USERNAME}
-ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
+WORKDIR /usr/src/app
 
-WORKDIR /app
 COPY package.json ./
+COPY config/ ./
 RUN npm install
+
+RUN mkdir -p public/uploads
 COPY . .
-RUN npm run build
+COPY .env .env
 
 EXPOSE 1337
-CMD ["npm", "start"]
+
+CMD ["npm", "run", "develop"]
