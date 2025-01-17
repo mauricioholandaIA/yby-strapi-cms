@@ -1,52 +1,56 @@
-name: Deploy Strapi
+name: Deploy to EC2
+
 on:
-  # activates the workflow when there is a push on the master branch
   push:
     branches:
       - main
+ 
 jobs:
   deploy:
-    runs-on: ubuntu-latest # the operating system your job should run on
-    strategy:
-      matrix:
-        node-version: [20.x]
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Latest Repo
-        # checks out your repository under the GitHub workspace so that your workflow can access it
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+    - name: Delete existing zip file
+      run: rm -f strapi-app.zip
 
-      - name: Generate Deployment Package 
-        # zip all files except .git
-        run: zip -r yby-strapi-cms-app.zip * -x "**.git**" -x "**.docker**" -x "**docker-**" -x "*package-lock.json*"
+    - name: Zip files
+      run: zip -r strapi-app.zip .
 
-      - name: Get timestamp
-        uses: gerred/actions/current-time@master
-        id: current-time
+    - name: Copy files to EC2
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        port: 22
+        source: "strapi-app.zip"
+        target: "/home/ubuntu"
 
-      - name: Run string replace
-        uses: frabert/replace-string-action@master
-        id: format-time
-        with:
-          # replaces '[:\.]+' in the timestamp with '-'
-          pattern: '[:\.]+'
-          string: "${{ steps.current-time.outputs.time }}"
-          replace-with: '-'
-          flags: 'g'
+    - name: SSH into EC2 and prepare environment
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        port: 22
+        script: |
+          sudo apt-get update
+          sudo apt-get install -y unzip docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+          unzip /home/ubuntu/strapi-app.zip -d /home/ubuntu/strapi-app
+          cd /home/ubuntu/strapi-app
 
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v21
-        with:
-         #  input the credentials you used to setup AWS CLI and credentials for the application environment
-          aws_access_key: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-          aws_secret_key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          application_name: yby-strapi-cms-app
-          environment_name: yby-strapi-cms-env
-          version_label: "app-${{ steps.format-time.outputs.replaced }}"
-          region: us-east-1
-          deployment_package: yby-strapi-cms-app.zip
-
-      - name: Deployed!
-        run: echo App deployed to ELB
+          sudo docker ps -q | xargs -r sudo docker stop
+          sudo docker rm $(sudo docker ps -aq)
+          sudo docker rmi $(sudo docker images -q)
+          sudo docker volume prune -f
+          sudo docker network prune -f
+          sudo docker system prune -a --volumes -f
+          
+          # Build and run the Docker container
+          sudo docker build -t strapi-app .
+          sudo docker run -d -p 1337:1337 strapi-app
